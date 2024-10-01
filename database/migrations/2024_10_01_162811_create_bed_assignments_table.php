@@ -21,8 +21,10 @@ return new class extends Migration
                 $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('restrict');
             $table->string('occupation_type');
             $table->integer('process_by');
-            $table->dateTime('check_in');
-            $table->dateTime('check_out')->nullable();
+            $table->string('status')->default('Rented'); // Rented, Paid
+            $table->date('check_in');
+            $table->date('check_out')->nullable();
+            $table->string('remarks')->nullable();
             $table->timestamps();
         });
     }

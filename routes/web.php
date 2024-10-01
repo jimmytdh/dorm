@@ -20,7 +20,11 @@ Route::group(['middleware' => 'auth'], function(){
 
     //manage Beds
     Route::post('beds/search',[BedCtrl::class,'searchBeds'])->name('bed.search');
-    Route::get('beds/assignment',[BedCtrl::class,'assignment'])->name('bed.assignment');
+    Route::get('beds/assignment',[BedCtrl::class,'assignment']);
+    Route::post('beds/assignment',[BedCtrl::class,'assignmentStore']);
+    Route::post('beds/assignment/search',[BedCtrl::class,'searchAssignment']);
+    Route::get('beds/assignment/{id}/edit',[BedCtrl::class,'assignmentEdit']);
+    Route::post('beds/assignment/{id}/edit',[BedCtrl::class,'assignmentUpdate']);
 
     Route::resource('/beds',BedCtrl::class);
 

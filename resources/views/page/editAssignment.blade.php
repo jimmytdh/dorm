@@ -11,32 +11,35 @@
         <div class="card">
             <form class="form-horizontal" id="formSubmit">
                 <div class="card-header">
-                    <h3 class="font-weight-bold"><span class="text-danger">Assign </span> Bed</h3>
+                    <h3 class="font-weight-bold"><span class="text-danger">Update </span> Assignment</h3>
                 </div>
                 <div class="card-body">
                     <div id="error_messages"></div>
                     <div id="success_messages"></div>
+                    <input type="hidden" name="selected_bed" id="selected_bed" value="{{ $info->bed_id }}" />
                     <div class="form-group">
                         <label for="bed_id">Select Bed</label>
                         <select class="form-control" name="bed_id" id="bed_id">
+                            <option value="{{ $info->bed_id }}">{{ $info->bed->code }}</option>
                             @foreach($beds as $bed)
-                            <option value="{{ $bed->id }}">{{ $bed->code }}</option>
+                                <option value="{{ $bed->id }}">{{ $bed->code }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="profile_id">Select Profile</label>
                         <select class="form-control" name="profile_id" id="profile_id">
+                            <option value="{{ $info->profile_id }}">{{ $info->profile->lname.", ".$info->profile->fname }}</option>
                             @foreach($profiles as $profile)
-                            <option value="{{ $profile->id }}">{{ $profile->lname.", ".$profile->fname }}</option>
+                                <option value="{{ $profile->id }}">{{ $profile->lname.", ".$profile->fname }}</option>
                             @endforeach
                         </select>
                     </div>
                     <div class="form-group">
                         <label for="occupation_type">Terms</label>
                         <select class="form-control" name="occupation_type" id="occupation_type">
-                            <option>Short Term</option>
-                            <option>Monthly Term</option>
+                            <option @if($info->occupation_type=='Short Term') selected @endif>Short Term</option>
+                            <option @if($info->occupation_type=='Monthly Term') selected @endif>Monthly Term</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -45,13 +48,16 @@
                     </div>
                     <div class="form-group">
                         <label for="check_in">Check-In Date</label>
-                        <input type="date" class="form-control" name="check_in" id="check_in" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                        <input type="date" class="form-control" name="check_in" id="check_in" value="{{ $info->check_in }}">
                     </div>
                 </div>
                 <div class="card-footer">
                     <button type="submit" class="btn btn-success float-right">
-                        <i class="fa fa-check"></i> Assign
+                        <i class="fa fa-check"></i> Update
                     </button>
+                    <a href="{{ url('/beds/assignment') }}" class="nav-link handle-link btn btn-default float-right mr-2">
+                        <i class="fa fa-arrow-left"></i> Cancel
+                    </a>
                 </div>
             </form>
         </div>
@@ -86,22 +92,22 @@
                         </thead>
                         <tbody>
                         @forelse($data as $row)
-                        <tr>
-                            <td>
-                                <a href="{{ url('beds/assignment/'.$row->id.'/edit') }}" class="handle-link">
-                                    {{ $row->bed->code }}
-                                </a>
-                            </td>
-                            <td>{{ $row->profile->lname.", ".$row->profile->fname }}</td>
-                            <td>
-                                @if($row->occupation_type=='Short Term')
-                                    <span class="text-danger">Short Term</span>
-                                @else
-                                    <span class="text-success">Monthly Term</span>
-                                @endif
-                            </td>
-                            <td>{{ date("M d, Y",strtotime($row->check_in)) }}</td>
-                        </tr>
+                            <tr>
+                                <td>
+                                    <a href="{{ url('beds/assignment/'.$row->id.'/edit') }}" class="handle-link">
+                                        {{ $row->bed->code }}
+                                    </a>
+                                </td>
+                                <td>{{ $row->profile->lname.", ".$row->profile->fname }}</td>
+                                <td>
+                                    @if($row->occupation_type=='Short Term')
+                                        <span class="text-danger">Short Term</span>
+                                    @else
+                                        <span class="text-success">Monthly Term</span>
+                                    @endif
+                                </td>
+                                <td>{{ date("M d, Y",strtotime($row->check_in)) }}</td>
+                            </tr>
                         @empty
                             <div class="alert alert-warning">
                                 No data found. Please try different keyword.
@@ -110,7 +116,7 @@
                         </tbody>
                     </table>
                 </div>
-{{--                {{ $data->links() }}--}}
+                {{--                {{ $data->links() }}--}}
             </div>
         </div>
     </div>
@@ -125,7 +131,7 @@
 
         $('#formSubmit').submit(function(e){
             e.preventDefault();
-            var url = `{{ url('beds/assignment') }}`;
+            var url = `{{ url('beds/assignment/'.$info->id.'/edit') }}`;
             $.ajax({
                 url: url,
                 type: 'POST',
@@ -135,12 +141,13 @@
                     profile_id: $('#profile_id').val(),
                     occupation_type: $('#occupation_type').val(),
                     check_in: $('#check_in').val(),
+                    selected_bed: $('#selected_bed').val(),
                 },
                 success: function(response){
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
-                        text: 'Successfully assigned a room!',
+                        text: 'Successfully updated!',
                         confirmButtonText: 'OK'
                     }).then((result) => {
                         if (result.isConfirmed) {

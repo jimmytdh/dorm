@@ -13,7 +13,17 @@ class BedAssignment extends Model
         'profile_id',
         'occupation_type',
         'process_by',
+        'status',
         'check_in',
         'check_out',
+        'remarks',
     ];
+
+    public function bed() {
+        return $this->belongsTo(Bed::class);
+    }
+
+    public function profile(){
+        return $this->belongsTo(Profile::class);
+    }
 }

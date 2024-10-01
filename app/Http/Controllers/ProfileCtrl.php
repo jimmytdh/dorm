@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileRequest;
+use App\Models\BedAssignment;
 use App\Models\Profile;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -20,7 +21,7 @@ class ProfileCtrl extends Controller
             });
         }
         $data = $data->latest()
-            ->paginate(1);
+            ->paginate(30);
         return $data;
     }
 
@@ -105,7 +106,12 @@ class ProfileCtrl extends Controller
         $this->authorize('manage_profiles');
 
         //before delete, check assignment table if it is used
-        Profile::findOrFail($id)->delete();
+        $profile = Profile::findOrFail($id);
+        $rented = BedAssignment::where('profile_id',$id)->where('status','rented')->first();
+        if($rented){
+            return abort(404, 'Unable to delete profile because the person is currently a renter!');
+        }
+        $profile->delete();
         return response()->json(['msg' => 'deleted']);
     }
 }

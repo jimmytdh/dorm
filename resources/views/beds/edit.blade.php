@@ -26,10 +26,11 @@
                     </div>
                     <div class="form-group">
                         <label for="status">Status</label>
-                        <select class="form-control" name="status" id="status">
+                        <select class="form-control" @if($bed->status =='Occupied') disabled @endif name="status" id="status">
+                            @if($bed->status =='Occupied') <option>Occupied</option> @endif
                             <option @if($bed->status=='Available') selected @endif>Available</option>
                             <option @if($bed->status=='Damage') selected @endif>Damage</option>
-                            <option @if($bed->status=='Unavailable') selected @endif>Unavailable</option>
+
                         </select>
                     </div>
                     <div class="form-group">

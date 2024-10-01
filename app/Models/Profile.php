@@ -16,4 +16,9 @@ class Profile extends Model
         'contact',
         'address',
     ];
+
+    public function bedAssignments()
+    {
+        return $this->hasMany(BedAssignment::class);
+    }
 }

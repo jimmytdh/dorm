@@ -1,7 +1,7 @@
 <style>
     .Available { color: #22c722; }
     .Damage { color: #f74c4cfa; }
-    .Unavailable { color: #d3ae56; }
+    .Occupied { color: #919191; }
 </style>
 <div class="col-md-8">
     <div class="card">
@@ -11,7 +11,7 @@
                 <form class="form-inline float-right" id="searchForm">
                     @csrf
                     <div class="form-group row">
-                        <input type="text" class="form-control mr-1 mb-1" id="search" value="{{ session('searchKeyword') }}"
+                        <input type="text" class="form-control mr-1 mb-1" id="search" value="{{ session('searchBed') }}"
                                name="search" placeholder="Search...">
                         <button type="submit" class="btn btn-success mr-1 mb-1">
                             <i class="fa fa-search"></i>

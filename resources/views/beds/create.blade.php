@@ -20,7 +20,6 @@
                     <select class="form-control" name="status" id="status">
                         <option>Available</option>
                         <option>Damage</option>
-                        <option>Unavailable</option>
                     </select>
                 </div>
                 <div class="form-group">

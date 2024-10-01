@@ -14,4 +14,8 @@ class Bed extends Model
         'status',
         'remarks',
     ];
+
+    public function bedAssignments() {
+        return $this->hasMany(BedAssignment::class);
+    }
 }

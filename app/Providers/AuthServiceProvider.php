@@ -29,6 +29,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('manage_users',fn(User $user) => $user->isAdmin());
         Gate::define('manage_beds',fn(User $user) => $user->isAdmin());
         Gate::define('manage_profiles',fn(User $user) => $user->isAdmin());
+        Gate::define('manage_assignment',fn(User $user) => $user->isAdmin());
 //        Gate::define('edit_document',function(User $user, Document $document, $section_id){
 //            return $document->section_id === $section_id;
 //        });
