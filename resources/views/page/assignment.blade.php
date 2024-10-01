@@ -1,0 +1,176 @@
+<style>
+    .form-inline {
+        display: block;
+    }
+    @media (max-width: 575px) {
+        .btn { width: 100% !important;}
+    }
+</style>
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="card">
+            <form class="form-horizontal" id="formSubmit">
+                <div class="card-header">
+                    <h3 class="font-weight-bold"><span class="text-danger">Assign </span> Room</h3>
+                </div>
+                <div class="card-body">
+                    <div id="error_messages"></div>
+                    <div id="success_messages"></div>
+                    <div class="form-group">
+                        <label for="bed_id">Select Bed</label>
+                        <select class="form-control" name="bed_id" id="bed_id">
+                            @foreach($beds as $bed)
+                            <option value="{{ $bed->id }}">{{ $bed->code }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="profile_id">Select Profile</label>
+                        <select class="form-control" name="profile_id" id="profile_id">
+                            @foreach($profiles as $profile)
+                            <option value="{{ $profile->id }}">{{ $profile->lname.", ".$profile->fname }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="occupation_type">Terms</label>
+                        <select class="form-control" name="occupation_type" id="occupation_type">
+                            <option>Short Term</option>
+                            <option>Monthly Term</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="process_by">Process By</label>
+                        <input type="text" disabled class="form-control" value="{{ auth()->user()->lname }}, {{ auth()->user()->fname }}">
+                    </div>
+                    <div class="form-group">
+                        <label for="check_in">Check-In Date</label>
+                        <input type="date" class="form-control" name="check_in" id="check_in" value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                    </div>
+                </div>
+                <div class="card-footer">
+                    <button type="submit" class="btn btn-success float-right">
+                        <i class="fa fa-check"></i> Assign
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h3 class="font-weight-bold">
+                    <span class="text-danger"></span>
+                    <form class="form-inline float-right" id="searchForm">
+                        @csrf
+                        <div class="form-group row">
+                            <input type="text" class="form-control mr-1 mb-1" id="search" value="{{ session('searchRoomAssignment') }}"
+                                   name="search" placeholder="Search...">
+                            <button type="submit" class="btn btn-success mr-1 mb-1">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-sm table-striped table-hover">
+                        <thead class="bg-dark">
+                        <tr>
+                            <th class="nowrap">Bed Code</th>
+                            <th class="nowrap">Profile</th>
+                            <th class="nowrap">Term</th>
+                            <th class="nowrap">Check-In</th>
+                            <th class="nowrap">Next Billing</th>
+                            <th class="nowrap"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        @forelse($data as $row)
+
+                        @empty
+                            <div class="alert alert-warning">
+                                No data found. Please try different keyword.
+                            </div>
+                        @endforelse
+                        </tbody>
+                    </table>
+                </div>
+{{--                {{ $data->links() }}--}}
+            </div>
+        </div>
+    </div>
+</div>
+@include('js.customUrl')
+<script>
+    $(function () {
+        function resetAlert(){
+            $('#error_messages').empty();
+            $('#success_messages').empty();
+        }
+
+        $('#formSubmit').submit(function(e){
+            e.preventDefault();
+            var url = `{{ url('beds/assignment') }}`;
+            $.ajax({
+                url: url,
+                type: 'PUT',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    fname: $('#fname').val(),
+                },
+                success: function(response){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Successfully assigned a room!',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Navigate to the desired URL after the alert is closed
+                            navigate(url);
+                        }
+                    });
+                },
+                error: function(xhr) {
+                    // Handle validation errors
+                    if (xhr.status === 422) {
+                        resetAlert();
+                        var errors = xhr.responseJSON.errors;
+                        $.each(errors, function(key, value) {
+                            // Displaying errors on form
+                            $('#error_messages').append('<div class="alert alert-danger">'+value+'</div>');
+                        });
+
+                    } else {
+                        // Handle other errors (if any)
+                        console.error(xhr.responseText);
+                    }
+                }
+            })
+        });
+
+        $('.page-link').click(function (e) {
+            e.preventDefault();
+            var route = $(this).attr('href');
+            if (route)
+                navigate(route);
+        })
+
+        $('#searchForm').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: `{{ url('beds/assignment/search') }}`,
+                type: 'POST',
+                data: {
+                    search: $('#search').val(),
+                    _token: "{{ csrf_token() }}"
+                },
+                success: (response)=> {
+                    navigate(window.location.href)
+                }
+            })
+        })
+    });
+</script>
