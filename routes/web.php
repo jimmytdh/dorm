@@ -7,6 +7,7 @@ use App\Http\Controllers\UserCtrl;
 use App\Http\Controllers\LoginCtrl;
 use App\Http\Controllers\BedCtrl;
 use App\Http\Controllers\ProfileCtrl;
+use App\Http\Controllers\PaymentCtrl;
 
 
 //Route::get('/login',[LoginCtrl::class,'login'])->name('login');
@@ -27,6 +28,11 @@ Route::group(['middleware' => 'auth'], function(){
     Route::post('beds/assignment/{id}/edit',[BedCtrl::class,'assignmentUpdate']);
 
     Route::resource('/beds',BedCtrl::class);
+
+
+    //Manage Payments
+    Route::get('report/payment',[PaymentCtrl::class,'paymentIndex']);
+    Route::post('report/payment',[PaymentCtrl::class,'paymentProcess']);
 
 
     //manage Profiles

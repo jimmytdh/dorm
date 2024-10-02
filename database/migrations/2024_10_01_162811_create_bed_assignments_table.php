@@ -19,7 +19,7 @@ return new class extends Migration
                 $table->foreign('bed_id')->references('id')->on('beds')->onDelete('restrict');
             $table->integer('profile_id');
                 $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('restrict');
-            $table->string('occupation_type');
+            $table->string('term');
             $table->integer('process_by');
             $table->string('status')->default('Rented'); // Rented, Paid
             $table->date('check_in');

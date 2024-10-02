@@ -134,7 +134,7 @@ class BedCtrl extends Controller
                     $query->where('beds.code', 'LIKE', "%{$searchKeyword}%")
                         ->orWhere('profiles.lname', 'LIKE', "%{$searchKeyword}%")
                         ->orWhere('profiles.fname', 'LIKE', "%{$searchKeyword}%")
-                        ->orWhere('bed_assignments.occupation_type', 'LIKE', "%{$searchKeyword}%");
+                        ->orWhere('bed_assignments.term', 'LIKE', "%{$searchKeyword}%");
                 });
             })
             ->orderBy('bed_assignments.check_in', 'desc')
@@ -164,7 +164,7 @@ class BedCtrl extends Controller
         BedAssignment::create([
             'bed_id' => $request->bed_id,
             'profile_id' => $request->profile_id,
-            'occupation_type' => $request->occupation_type,
+            'term' => $request->term,
             'process_by' => Auth::id(),
             'status' => 'Rented',
             'check_in' => $request->check_in
@@ -199,7 +199,7 @@ class BedCtrl extends Controller
         $assignment->update([
             'bed_id' => $request->bed_id,
             'profile_id' => $request->profile_id,
-            'occupation_type' => $request->occupation_type,
+            'term' => $request->term,
             'process_by' => Auth::id(),
             'status' => 'Rented',
             'check_in' => $request->check_in

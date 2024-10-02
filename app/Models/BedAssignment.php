@@ -11,7 +11,7 @@ class BedAssignment extends Model
     protected $fillable = [
         'bed_id',
         'profile_id',
-        'occupation_type',
+        'term',
         'process_by',
         'status',
         'check_in',
@@ -25,5 +25,9 @@ class BedAssignment extends Model
 
     public function profile(){
         return $this->belongsTo(Profile::class);
+    }
+
+    public function payment(){
+        return $this->hasMany(Payment::class);
     }
 }

@@ -25,7 +25,7 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="profile_id">Select Profile</label>
+                        <label for="profile_id">Select Occupant</label>
                         <select class="form-control" name="profile_id" id="profile_id">
                             @foreach($profiles as $profile)
                             <option value="{{ $profile->id }}">{{ $profile->lname.", ".$profile->fname }}</option>
@@ -33,10 +33,10 @@
                         </select>
                     </div>
                     <div class="form-group">
-                        <label for="occupation_type">Terms</label>
-                        <select class="form-control" name="occupation_type" id="occupation_type">
-                            <option>Short Term</option>
-                            <option>Monthly Term</option>
+                        <label for="term">Terms</label>
+                        <select class="form-control" name="term" id="term">
+                            <option>Daily</option>
+                            <option>Monthly</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -79,7 +79,7 @@
                         <thead class="bg-dark">
                         <tr>
                             <th class="nowrap">Bed Code</th>
-                            <th class="nowrap">Profile</th>
+                            <th class="nowrap">Occupant</th>
                             <th class="nowrap">Term</th>
                             <th class="nowrap">Check-In</th>
                         </tr>
@@ -94,10 +94,10 @@
                             </td>
                             <td>{{ $row->profile->lname.", ".$row->profile->fname }}</td>
                             <td>
-                                @if($row->occupation_type=='Short Term')
-                                    <span class="text-danger">Short Term</span>
+                                @if($row->term=='Daily')
+                                    <span class="badge badge-warning">Daily</span>
                                 @else
-                                    <span class="text-success">Monthly Term</span>
+                                    <span class="badge badge-info">Monthly</span>
                                 @endif
                             </td>
                             <td>{{ date("M d, Y",strtotime($row->check_in)) }}</td>
@@ -133,7 +133,7 @@
                     _token: "{{ csrf_token() }}",
                     bed_id: $('#bed_id').val(),
                     profile_id: $('#profile_id').val(),
-                    occupation_type: $('#occupation_type').val(),
+                    term: $('#term').val(),
                     check_in: $('#check_in').val(),
                 },
                 success: function(response){

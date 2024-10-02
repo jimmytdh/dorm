@@ -27,4 +27,8 @@ class User extends Authenticatable
         return $this->role === 'admin';
     }
 
+    public function payment(){
+        return $this->hasMany(Payment::class);
+    }
+
 }
