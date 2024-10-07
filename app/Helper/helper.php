@@ -17,9 +17,11 @@ if (!function_exists('checkRentStatus')) {
         // Get the check-in date
         $checkInDate = Carbon::parse($bedAssignment->check_in);
         $today = Carbon::today();
+        $lastPay = lastPay($assignmentId);
+        $month = ($lastPay['date']) ? Carbon::parse($lastPay['date'])->month : $checkInDate->month;
 
         // Determine the due date (last day of the current month)
-        $dueDate = Carbon::createFromDate($today->year, $today->month-1, 1)->endOfMonth();
+        $dueDate = Carbon::createFromDate($today->year, $month, $checkInDate->day);
 
         // Calculate the difference in days between today and the due date
         $daysAfterDue = $dueDate->diffInDays($today, false); // false means not absolute value
@@ -40,7 +42,7 @@ if (!function_exists('checkRentStatus')) {
             return "Overdue";
         } elseif ($daysAfterDue >= 6) {
             // 6 or more days after the due date
-            return "Late";
+            return "Late and Overdue";
         } else {
             // Before the due date
             if($balance > 0){

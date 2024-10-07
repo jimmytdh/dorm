@@ -44,6 +44,9 @@
                         </thead>
                         <tbody>
                         @forelse($data as $row)
+                        <?php $lastPay = lastPay($row->id); ?>
+                        <?php $balance = calculateRemainingBalance($row->id); ?>
+                        <?php $status = checkRentStatus($row->id); ?>
                         <tr>
                             <td>{{ $row->bed->code }}</td>
                             <td>
@@ -53,9 +56,12 @@
                             <td class="{{ $row->term }}">{{ $row->term }}</td>
                             <td>
                                 @if($row->term == 'Daily')
-                                    <alert class="badge badge-warning">Pending</alert>
+                                    @if($balance>0)
+                                        <alert class="badge badge-warning">Pending</alert>
+                                    @else
+                                        <alert class="badge badge-success">Settled</alert>
+                                    @endif
                                 @else
-                                    <?php $status = checkRentStatus($row->id); ?>
                                     @if($status == 'Settled')
                                         <alert class="badge badge-success">Settled</alert>
                                     @elseif($status == 'Pending')
@@ -66,7 +72,7 @@
                                 @endif
                             </td>
                             <td>
-                                <?php $lastPay = lastPay($row->id); ?>
+
                                 @if($lastPay['date'])
                                     <span class="text-success">₱ {{ number_format($lastPay['amount'],2) }}</span><br>
                                     <small class="text-danger font-italic">({{ date('M d, Y',strtotime($lastPay['date'])) }})</small>
@@ -75,7 +81,6 @@
                                 @endif
                             </td>
                             <td>
-                                <?php $balance = calculateRemainingBalance($row->id); ?>
                                 @if($balance>0)
                                     <span class="text-danger">₱ {{ number_format($balance,2) }}</span>
                                 @else
@@ -93,7 +98,9 @@
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item payment_menu" href="#paymentModal" data-assignment_id="{{ $row->id }}" data-toggle="modal"><i class="fa fa-dollar-sign"></i> Payment</a>
                                         <a class="dropdown-item" href="#"><i class="fa fa-bullhorn"></i> Notify</a>
-                                        <a class="dropdown-item" href="#"><i class="fa fa-sign-out-alt"></i> Check Out</a>
+                                        @if($balance<=0)
+                                            <a class="dropdown-item" href="#"><i class="fa fa-sign-out-alt"></i> Check Out</a>
+                                        @endif
                                     </div>
                                 </div>
                             </td>

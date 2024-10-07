@@ -95,13 +95,13 @@
                             <p>Dashboard</p>
                         </a>
                     </li>
-                    <li class="nav-item">
-                        <a href="{{ url('/notification') }}" class="nav-link handle-link">
-                            <i class="fas fa-bullhorn nav-icon"></i>
-                            <p>Notification</p>
-                            <span class="right badge badge-danger">3</span>
-                        </a>
-                    </li>
+{{--                    <li class="nav-item">--}}
+{{--                        <a href="{{ url('/notification') }}" class="nav-link handle-link">--}}
+{{--                            <i class="fas fa-bullhorn nav-icon"></i>--}}
+{{--                            <p>Notification</p>--}}
+{{--                            <span class="right badge badge-danger">3</span>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
                     <li class="nav-item">
                         <a href="{{ url('/beds') }}" class="nav-link handle-link">
                             <i class="fas fa-bed nav-icon"></i>
@@ -121,29 +121,6 @@
                         </a>
                     </li>
 
-{{--                    <li class="nav-item">--}}
-{{--                        <a href="#" class="nav-link handle-link">--}}
-{{--                            <i class="nav-icon fas fa-user-cog"></i>--}}
-{{--                            <p>--}}
-{{--                                Users--}}
-{{--                                <i class="fas fa-angle-left right"></i>--}}
-{{--                            </p>--}}
-{{--                        </a>--}}
-{{--                        <ul class="nav nav-treeview" style="display: none;">--}}
-{{--                            <li class="nav-item">--}}
-{{--                                <a href="{{ url('/users/create') }}" class="nav-link handle-link">--}}
-{{--                                    <i class="fas fa-angle-double-right nav-icon"></i>--}}
-{{--                                    <p>New User</p>--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
-{{--                            <li class="nav-item">--}}
-{{--                                <a href="{{ url('/users') }}" class="nav-link handle-link">--}}
-{{--                                    <i class="fas fa-angle-double-right nav-icon"></i>--}}
-{{--                                    <p>User List</p>--}}
-{{--                                </a>--}}
-{{--                            </li>--}}
-{{--                        </ul>--}}
-{{--                    </li>--}}
 
                     <li class="nav-header">REPORT</li>
                     <li class="nav-item">
@@ -153,18 +130,24 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/report/income') }}" class="nav-link handle-link">
-                            <i class="fas fa-dollar-sign nav-icon"></i>
-                            <p>Monthly Income</p>
+                        <a href="{{ url('/report/payment/history') }}" class="nav-link handle-link">
+                            <i class="fas fa-history nav-icon"></i>
+                            <p>Payment History</p>
                         </a>
                     </li>
+{{--                    <li class="nav-item">--}}
+{{--                        <a href="{{ url('/report/income') }}" class="nav-link handle-link">--}}
+{{--                            <i class="fas fa-dollar-sign nav-icon"></i>--}}
+{{--                            <p>Monthly Income</p>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
 
-                    <li class="nav-item">
-                        <a href="{{ url('/report/residents') }}" class="nav-link handle-link">
-                            <i class="fas fa-user-shield nav-icon"></i>
-                            <p>Total Residents</p>
-                        </a>
-                    </li>
+{{--                    <li class="nav-item">--}}
+{{--                        <a href="{{ url('/report/residents') }}" class="nav-link handle-link">--}}
+{{--                            <i class="fas fa-user-shield nav-icon"></i>--}}
+{{--                            <p>Total Residents</p>--}}
+{{--                        </a>--}}
+{{--                    </li>--}}
 
                     <li class="nav-header">SETTINGS</li>
                     <li class="nav-item">
