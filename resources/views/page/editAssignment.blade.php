@@ -101,9 +101,9 @@
                                 <td>{{ $row->profile->lname.", ".$row->profile->fname }}</td>
                                 <td>
                                     @if($row->term=='Daily')
-                                        <span class="text-danger">Daily</span>
+                                        <span class="badge badge-warning">Daily</span>
                                     @else
-                                        <span class="text-success">Monthly</span>
+                                        <span class="badge badge-info">Monthly</span>
                                     @endif
                                 </td>
                                 <td>{{ date("M d, Y",strtotime($row->check_in)) }}</td>

@@ -35,7 +35,7 @@ class InitialFees extends Seeder
         ]);
 
         Bed::create([
-            'code' => 'R1B1',
+            'code' => 'R1B2',
             'description' => 'Room 1, Bed 2',
             'status' => 'Available',
             'remarks' => null
