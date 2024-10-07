@@ -21,11 +21,11 @@ if (!function_exists('checkRentStatus')) {
         $month = ($lastPay['date']) ? Carbon::parse($lastPay['date'])->month : $checkInDate->month;
 
         // Determine the due date (last day of the current month)
-        $dueDate = Carbon::createFromDate($today->year, $month, $checkInDate->day);
+        $dueDate = Carbon::createFromDate($today->year, $month+1, $checkInDate->day);
 
         // Calculate the difference in days between today and the due date
+        $dueInMonth = $dueDate->diffInMonths($today, false);
         $daysAfterDue = $dueDate->diffInDays($today, false); // false means not absolute value
-
 
         $balance = calculateRemainingBalance($assignmentId);
 

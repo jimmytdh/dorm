@@ -25,5 +25,7 @@ class DatabaseSeeder extends Seeder
             'avatar' => 'avatar.png',
             'role' => 'admin',
         ]);
+
+        $this->call(InitialFees::class);
     }
 }
