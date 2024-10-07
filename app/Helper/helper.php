@@ -90,6 +90,21 @@ if (!function_exists('calculateRemainingBalance')) {
     }
 }
 
+if (!function_exists('totalPaid')) {
+    function totalPaid($assignmentId)
+    {
+        // Fetch the BedAssignment, Payment, and Fee information
+        $bedAssignment = BedAssignment::find($assignmentId);
+        if (!$bedAssignment) {
+            return "Assignment not found.";
+        }
+
+        // Get the total amount paid by the occupant
+        $totalPaid = Payment::where('assignment_id', $assignmentId)->sum('amount');
+        return $totalPaid;
+    }
+}
+
 if (! function_exists('lastPay')) {
     function lastPay($assignment_id)
     {

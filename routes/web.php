@@ -33,6 +33,16 @@ Route::group(['middleware' => 'auth'], function(){
     //Manage Payments
     Route::get('report/payment',[PaymentCtrl::class,'paymentIndex']);
     Route::post('report/payment',[PaymentCtrl::class,'paymentProcess']);
+    Route::post('report/payment/checkout',[PaymentCtrl::class,'paymentCheckout']);
+    Route::post('report/payment/search',[PaymentCtrl::class,'paymentSearch']);
+
+    Route::get('report/payment/history',[PaymentCtrl::class,'paymentHistory']);
+    Route::post('report/payment/history',[PaymentCtrl::class,'paymentHistoryProcess']);
+    Route::get('report/payment/history/{id}',[PaymentCtrl::class,'paymentInvoice']);
+
+    Route::get('report/rental',[BedCtrl::class,'rentalLogs']);
+    Route::post('report/rental/search',[BedCtrl::class,'rentalLogsSearch']);
+
 
 
     //manage Profiles

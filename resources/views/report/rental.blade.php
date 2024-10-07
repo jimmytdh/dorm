@@ -13,11 +13,11 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="font-weight-bold">
-                    <span class="text-danger">Payment </span> History
+                    <span class="text-danger">Rental </span> Logs
                     <form class="form-inline float-right" id="searchForm">
                         @csrf
                         <div class="form-group row">
-                            <input type="text" class="form-control mr-1 mb-1" id="search" value="{{ session('searchPayment') }}"
+                            <input type="text" class="form-control mr-1 mb-1" id="search" value="{{ session('searchRentalLogs') }}"
                                    name="search" placeholder="Search...">
                             <button type="submit" class="btn btn-success mr-1 mb-1">
                                 <i class="fa fa-search"></i>
@@ -33,34 +33,30 @@
                     <table class="table table-sm table-striped table-hover">
                         <thead class="bg-dark">
                         <tr>
+                            <th class="nowrap">Bed Code</th>
                             <th class="nowrap">Occupant</th>
                             <th class="nowrap">Term of Stay</th>
-                            <th class="nowrap">Amount Paid</th>
-                            <th class="nowrap">Date Received</th>
-                            <td></td>
+                            <th class="nowrap">Check-In</th>
+                            <th class="nowrap">Check-Out</th>
+                            <th class="nowrap">Total Paid</th>
                         </tr>
                         </thead>
                         <tbody>
                         @forelse($data as $row)
-                        <tr>
-                            <td>{{ $row->lname }}, {{ $row->fname }}</td>
-                            <td class="{{ $row->term }}">{{ $row->term }}</td>
-                            <td>₱{{ number_format($row->amount,2) }}</td>
-                            <td>{{ date('M d, Y h:i A',strtotime($row->date_paid)) }}</td>
-                            <td>
-                                <div class="dropdown">
-                                    <!-- Font Awesome ellipsis-v as the dropdown trigger -->
-                                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" aria-expanded="false">
-                                        Action
-                                    </a>
-                                    <!-- Dropdown menu -->
-                                    <div class="dropdown-menu dropdown-menu-right">
-                                        <a class="dropdown-item handle-link" href="{{ url('report/payment/history/'.$row->payment_id) }}"><i class="fa fa-file-invoice"></i> Invoice</a>
-                                        <a class="dropdown-item" href="#"><i class="fa fa-cogs"></i> Update</a>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                            <tr>
+                                <td>{{ $row->bed->code }}</td>
+                                <td>{{ $row->profile->lname }}, {{ $row->profile->fname }}</td>
+                                <td>
+                                    @if($row->term == 'Daily')
+                                        <span class="badge badge-warning">Daily</span>
+                                    @else
+                                        <span class="badge badge-success">Monthly</span>
+                                    @endif
+                                </td>
+                                <td>{{ date('M d, Y',strtotime($row->check_in)) }}</td>
+                                <td>{{ date('M d, Y',strtotime($row->check_out)) }}</td>
+                                <td>₱{{ number_format(totalPaid($row->id),2) }}</td>
+                            </tr>
                         @empty
                             <div class="alert alert-warning">
                                 No data found. Please try different keyword.
@@ -77,11 +73,6 @@
 @include('js.customUrl')
 <script>
     $(function () {
-        let assignment_id = 0;
-
-        $('.payment_menu').click(function(){
-            assignment_id = $(this).data('assignment_id');
-        })
         function resetAlert(){
             $('#error_messages').empty();
             $('#success_messages').empty();
@@ -90,7 +81,7 @@
         $('#searchForm').submit(function (e) {
             e.preventDefault();
             $.ajax({
-                url: `{{ url('report/payment/history/search') }}`,
+                url: `{{ url('report/rental/search') }}`,
                 type: 'POST',
                 data: {
                     search: $('#search').val(),
@@ -101,8 +92,6 @@
                 }
             })
         })
-
-
 
         $('.page-link').click(function (e) {
             e.preventDefault();

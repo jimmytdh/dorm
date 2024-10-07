@@ -137,6 +137,7 @@ class BedCtrl extends Controller
                         ->orWhere('bed_assignments.term', 'LIKE', "%{$searchKeyword}%");
                 });
             })
+            ->where('bed_assignments.status','Rented')
             ->orderBy('bed_assignments.check_in', 'desc')
             ->paginate(30);
         return $assignment;
@@ -211,5 +212,35 @@ class BedCtrl extends Controller
             'msg' => 'Bed Assignment successfully updated!',
             'status' => 'success'
         ]);
+    }
+
+    public function rentalLogsSearch(Request $request){
+        Session::put('searchRentalLogs', $request->search);
+        return response()->json(['msg' => 'Search Complete']);
+    }
+
+    public function rentalLogs(){
+        $searchKeyword = Session::get('searchRentalLogs');
+        if (request()->ajax()) {
+            $data = BedAssignment::select('bed_assignments.*')
+                ->join('beds', 'bed_assignments.bed_id', '=', 'beds.id')
+                ->join('profiles', 'bed_assignments.profile_id', '=', 'profiles.id')
+                ->when($searchKeyword, function($query, $searchKeyword) {
+                    return $query->where(function($query) use ($searchKeyword) {
+                        // Search in beds.code or profiles lname/fname
+                        $query->where('beds.code', 'LIKE', "%{$searchKeyword}%")
+                            ->orWhere('profiles.lname', 'LIKE', "%{$searchKeyword}%")
+                            ->orWhere('profiles.fname', 'LIKE', "%{$searchKeyword}%")
+                            ->orWhere('bed_assignments.term', 'LIKE', "%{$searchKeyword}%");
+                    });
+                })
+                ->where('bed_assignments.status','Checkout')
+                ->orderBy('bed_assignments.check_in', 'desc')
+                ->paginate(30);
+
+            $view = view('report.rental', compact('data'))->render();
+            return loadPage($view, 'Rental Logs');
+        }
+        return view('app');
     }
 }

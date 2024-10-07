@@ -22,9 +22,20 @@
 </div>
 <div class="row">
     <div class="col-lg-6 col-6">
+        <div class="small-box py-3 bg-primary">
+            <div class="inner">
+                <h3 class="badge-earning">₱{{ number_format($data['earned'],2) }}</h3>
+                <p>{{ date('F') }} earning</p>
+            </div>
+            <div class="icon">
+                <i class="fas fa-money-bill-wave"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 col-6">
         <div class="small-box py-3 bg-info">
             <div class="inner">
-                <h3 class="badge-created">0</h3>
+                <h3 class="badge-created">{{ $data['beds'] }}</h3>
                 <p>No. of Beds</p>
             </div>
             <div class="icon">
@@ -36,7 +47,7 @@
     <div class="col-lg-6 col-6">
         <div class="small-box py-3 bg-success">
             <div class="inner">
-                <h3 class="badge-pending">0</h3>
+                <h3 class="badge-pending">{{ $data['residents'] }}</h3>
                 <p>Residents</p>
             </div>
             <div class="icon">
@@ -49,24 +60,11 @@
 
         <div class="small-box py-3 bg-warning">
             <div class="inner">
-                <h3 class="badge-complete">0</h3>
+                <h3 class="badge-complete">{{ $data['available'] }}</h3>
                 <p>Available Beds</p>
             </div>
             <div class="icon">
                 <i class="fas fa-bed"></i>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-lg-6 col-6">
-
-        <div class="small-box py-3 bg-danger">
-            <div class="inner">
-                <h3 class="badge-overdue">0</h3>
-                <p>Overdue</p>
-            </div>
-            <div class="icon">
-                <i class="fas fa-calendar-times"></i>
             </div>
         </div>
     </div>
@@ -108,6 +106,5 @@
         animateValue(".badge-created", 0, $('.badge-created').text(), 1000); // Animate from 0 to 100 in 2 seconds
         animateValue(".badge-pending", 0, $('.badge-pending').text(), 1000); // Animate from 0 to 200 in 2 seconds
         animateValue(".badge-complete", 0, $('.badge-complete').text(), 1000); // Animate from 0 to 200 in 2 seconds
-        animateValue(".badge-overdue", 0, $('.badge-overdue').text(), 1000); // Animate from 0 to 200 in 2 seconds
     });
 </script>

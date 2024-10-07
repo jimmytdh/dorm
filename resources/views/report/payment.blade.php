@@ -99,7 +99,7 @@
                                         <a class="dropdown-item payment_menu" href="#paymentModal" data-assignment_id="{{ $row->id }}" data-toggle="modal"><i class="fa fa-dollar-sign"></i> Payment</a>
                                         <a class="dropdown-item" href="#"><i class="fa fa-bullhorn"></i> Notify</a>
                                         @if($balance<=0)
-                                            <a class="dropdown-item" href="#"><i class="fa fa-sign-out-alt"></i> Check Out</a>
+                                            <a class="dropdown-item checkout_menu" href="#checkoutModal" data-assignment_id="{{ $row->id }}" data-toggle="modal"><i class="fa fa-sign-out-alt"></i> Check Out</a>
                                         @endif
                                     </div>
                                 </div>
@@ -119,6 +119,7 @@
     </div>
 </div>
 @include('modal.pay')
+@include('modal.checkout')
 @include('js.customUrl')
 <script>
     $(function () {
@@ -127,10 +128,15 @@
         $('.payment_menu').click(function(){
             assignment_id = $(this).data('assignment_id');
         })
+
+        $('.checkout_menu').click(function(){
+            assignment_id = $(this).data('assignment_id');
+        })
         function resetAlert(){
             $('#error_messages').empty();
             $('#success_messages').empty();
         }
+
 
         $('#payForm').submit(function(e){
             e.preventDefault();
@@ -175,6 +181,64 @@
                 }
             })
         });
+
+        $('#checkoutForm').submit(function(e){
+            e.preventDefault();
+            $('#checkoutModal').modal('hide');
+            $.ajax({
+                url: `{{ url('report/payment/checkout') }}`,
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    assignment_id: assignment_id,
+                    remarks: $('#remarks').val(),
+                },
+                success: function(response){
+                    console.log(response)
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Checkout successfully!',
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Navigate to the desired URL after the alert is closed
+                            navigate("{{ url('report/payment') }}");
+                        }
+                    });
+                },
+                error: function(xhr) {
+                    // Handle validation errors
+                    if (xhr.status === 422) {
+                        resetAlert();
+                        var errors = xhr.responseJSON.errors;
+                        $.each(errors, function(key, value) {
+                            // Displaying errors on form
+                            $('#error_messages').append('<div class="alert alert-danger">'+value+'</div>');
+                        });
+
+                    } else {
+                        // Handle other errors (if any)
+                        console.error(xhr.responseText);
+                    }
+                }
+            })
+        });
+
+        $('#searchForm').submit(function (e) {
+            e.preventDefault();
+            $.ajax({
+                url: `{{ url('report/payment/search') }}`,
+                type: 'POST',
+                data: {
+                    search: $('#search').val(),
+                    _token: "{{ csrf_token() }}"
+                },
+                success: (response)=> {
+                    navigate(window.location.href)
+                }
+            })
+        })
 
         $('.page-link').click(function (e) {
             e.preventDefault();

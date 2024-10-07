@@ -135,6 +135,12 @@
                             <p>Payment History</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a href="{{ url('/report/rental') }}" class="nav-link handle-link">
+                            <i class="fas fa-clipboard-list nav-icon"></i>
+                            <p>Rental Logs</p>
+                        </a>
+                    </li>
 {{--                    <li class="nav-item">--}}
 {{--                        <a href="{{ url('/report/income') }}" class="nav-link handle-link">--}}
 {{--                            <i class="fas fa-dollar-sign nav-icon"></i>--}}
