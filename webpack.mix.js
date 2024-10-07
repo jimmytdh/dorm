@@ -1,5 +1,5 @@
 const mix = require('laravel-mix');
-mix.setResourceRoot('/trackflow/');
+mix.setResourceRoot('/dorm/');
 /*
  |--------------------------------------------------------------------------
  | Mix Asset Management
