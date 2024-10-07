@@ -113,7 +113,7 @@
                         </tbody>
                     </table>
                 </div>
-{{--                {{ $profiles->links() }}--}}
+                {{ $data->links() }}
             </div>
         </div>
     </div>

@@ -4,16 +4,18 @@
     }
 </style>
 
-<h2 class="font-weight-bold"><span class="text-danger">Welcome, </span>{{ auth()->user()->fname.' '.auth()->user()->lname }}</h2>
+<h2 class="font-weight-bold"><span class="text-danger">Hello, </span>{{ auth()->user()->fname.' '.auth()->user()->lname }}</h2>
 <hr>
 <div class="row mb-8">
     <div class="col-md-12">
         <!-- card -->
         <div class="card bg-light border-0 rounded-4" style="background-image: url({{ asset('images/banner.jpg') }}); background-repeat: no-repeat; background-size: cover; background-position: right">
             <div class="card-body p-lg-5">
-                <h1>Welcome back! {{ auth()->user()->fname }}</h1>
-                <p></p>
-                <a href="{{ url('beds/assignment') }}" class="handle-link btn btn-primary">Bed Assignment</a>
+                <div class="col-sm-12 col-lg-6">
+                    <h1>Welcome to NONESCOST Multi - Purpose Cooperative Dormitory Management System</h1>
+                    <p>The Dormitory Management System is designed to streamline dormitory administration by automating tasks like student registrations, room assignments, and occupancy tracking. </p>
+                    <a href="{{ url('beds/assignment') }}" class="handle-link btn btn-primary">Bed Assignment</a>
+                </div>
             </div>
         </div>
     </div>
@@ -70,7 +72,7 @@
     </div>
 
 </div>
-<div class="row p-2">
+<div class="row p-2 hidden">
     <div class="card col-12">
         <div class="card-body">
             <canvas id="barChart" style="min-height: 300px; height: 300px; max-height: 300px; max-width: 100%;"></canvas>
