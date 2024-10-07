@@ -110,13 +110,13 @@
                             </tr>
                         @empty
                             <div class="alert alert-warning">
-                                No data found. Please try different keyword.
+                                No data found. Please try again.
                             </div>
                         @endforelse
                         </tbody>
                     </table>
                 </div>
-                {{--                {{ $data->links() }}--}}
+            {{ $data->links() }}
             </div>
         </div>
     </div>
