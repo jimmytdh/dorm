@@ -28,19 +28,19 @@ class NotificationCtrl extends Controller
         return response()->json($response);
     }
     public function sendNotification(){
-        $sid    = "AC658e6bc0773abe53ce672cfc29f6bac0";
-        $token  = "76a83616e861d59055a1d2d4003fb994";
-        $twilio = new Client($sid, $token);
-
-        $message = $twilio->messages
-            ->create("+639760130318", // to
-                array(
-                    "from" => "+15704059113",
-                    "body" => "Lets try again."
-                )
-            );
-
-
-        return $message;
+//        $sid    = "AC658e6bc0773abe53ce672cfc29f6bac0";
+//        $token  = "76a83616e861d59055a1d2d4003fb994";
+//        $twilio = new Client($sid, $token);
+//
+//        $message = $twilio->messages
+//            ->create("+639760130318", // to
+//                array(
+//                    "from" => "+15704059113",
+//                    "body" => "Lets try again."
+//                )
+//            );
+//
+//
+//        return $message;
     }
 }
