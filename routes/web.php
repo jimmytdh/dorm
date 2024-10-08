@@ -8,6 +8,8 @@ use App\Http\Controllers\LoginCtrl;
 use App\Http\Controllers\BedCtrl;
 use App\Http\Controllers\ProfileCtrl;
 use App\Http\Controllers\PaymentCtrl;
+use App\Http\Controllers\NotificationCtrl;
+use App\Http\Controllers\SMSCtrl;
 
 
 //Route::get('/login',[LoginCtrl::class,'login'])->name('login');
@@ -43,6 +45,10 @@ Route::group(['middleware' => 'auth'], function(){
     Route::get('report/rental',[BedCtrl::class,'rentalLogs']);
     Route::post('report/rental/search',[BedCtrl::class,'rentalLogsSearch']);
 
+    //manage notifications
+    Route::get('notification/send',[NotificationCtrl::class,'sendNotification']);
+    Route::get('notification/sms',[SMSCtrl::class,'sendSMS']);
+    Route::post('notification/sendSMS',[SMSCtrl::class,'sendSMS']);
 
 
     //manage Profiles

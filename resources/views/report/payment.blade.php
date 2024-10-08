@@ -6,6 +6,15 @@
     .Daily { color: #ff0000; }
     .table td {
         vertical-align: middle;
+        white-space: nowrap;
+    }
+    @media (max-width: 507px) {
+        .float-right {
+            float: left !important;
+            margin-top: 15px;
+        }
+        .form-inline { width: 100%; }
+        .form-inline button { width: 100%; }
     }
 </style>
 <div class="row justify-content-center">
@@ -97,7 +106,9 @@
                                     <!-- Dropdown menu -->
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item payment_menu" href="#paymentModal" data-assignment_id="{{ $row->id }}" data-toggle="modal"><i class="fa fa-dollar-sign"></i> Payment</a>
-                                        <a class="dropdown-item" href="#"><i class="fa fa-bullhorn"></i> Notify</a>
+                                        @if($status !== 'Settled' || $balance > 0)
+                                        <a class="dropdown-item notify_menu" href="#notificationModal" data-status="{{ $status }}" data-assignment_id="{{ $row->id }}" data-toggle="modal"><i class="fa fa-bullhorn"></i> Notify</a>
+                                        @endif
                                         @if($balance<=0)
                                             <a class="dropdown-item checkout_menu" href="#checkoutModal" data-assignment_id="{{ $row->id }}" data-toggle="modal"><i class="fa fa-sign-out-alt"></i> Check Out</a>
                                         @endif
@@ -120,6 +131,7 @@
 </div>
 @include('modal.pay')
 @include('modal.checkout')
+@include('modal.notificationModal')
 @include('js.customUrl')
 <script>
     $(function () {
@@ -129,12 +141,69 @@
             assignment_id = $(this).data('assignment_id');
         })
 
+        $('.notify_menu').click(function(){
+            assignment_id = $(this).data('assignment_id');
+            var status = $(this).data('status');
+            hideAllNotification();
+            if(status == 'Due')
+                $('#sms_due').show()
+            else if(status == 'Overdue')
+                $('#sms_overdue').show()
+            else if(status == 'Late and Overdue')
+                $('#sms_late').show()
+            else
+                $('#sms_pending').show()
+
+        })
+
+        $('.btn-notify').click(function(){
+            var msg = $(this).text();
+            $('#notificationModal').modal('hide');
+            $.ajax({
+                url: `{{ url('notification/sendSMS') }}`,
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    assignment_id: assignment_id,
+                    msg: msg,
+                },
+                success: function(response){
+                    console.log(response)
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: 'Notification successfully sent!',
+                        confirmButtonText: 'OK'
+                    });
+                },
+                error: function(xhr) {
+                    // Handle validation errors
+                    if (xhr.status === 422) {
+                        resetAlert();
+                        var errors = xhr.responseJSON.errors;
+                        $.each(errors, function(key, value) {
+                            // Displaying errors on form
+                            $('#error_messages').append('<div class="alert alert-danger">'+value+'</div>');
+                        });
+
+                    } else {
+                        // Handle other errors (if any)
+                        console.error(xhr.responseText);
+                    }
+                }
+            })
+        });
+
         $('.checkout_menu').click(function(){
             assignment_id = $(this).data('assignment_id');
         })
         function resetAlert(){
             $('#error_messages').empty();
             $('#success_messages').empty();
+        }
+
+        function hideAllNotification(){
+            $('.btn-notify').hide();
         }
 
 
@@ -246,6 +315,8 @@
             if (route)
                 navigate(route);
         })
+
+
 
     });
 </script>

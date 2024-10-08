@@ -5,6 +5,13 @@
     @media (max-width: 575px) {
         .btn { width: 100% !important;}
     }
+    @media (max-width: 507px) {
+        .float-right {
+            float: left !important;
+            margin-top: 15px;
+        }
+        .form-inline { width: 100%; }
+    }
 </style>
 <div class="row justify-content-center">
     <div class="col-md-4">

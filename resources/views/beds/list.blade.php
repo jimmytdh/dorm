@@ -2,23 +2,36 @@
     .Available { color: #22c722; }
     .Damage { color: #f74c4cfa; }
     .Occupied { color: #919191; }
+    @media (min-width: 580px) {
+        .float-right-580 {
+            float: right;
+        }
+    }
 </style>
 <div class="col-md-8">
     <div class="card">
         <div class="card-header">
-            <h3 class="font-weight-bold">
-                <span class="text-danger">List of</span> Bed
-                <form class="form-inline float-right" id="searchForm">
-                    @csrf
-                    <div class="form-group row">
-                        <input type="text" class="form-control mr-1 mb-1" id="search" value="{{ session('searchBed') }}"
-                               name="search" placeholder="Search...">
-                        <button type="submit" class="btn btn-success mr-1 mb-1">
-                            <i class="fa fa-search"></i>
-                        </button>
-                    </div>
-                </form>
-            </h3>
+            <div class="row">
+                <div class="col-md-6 col-sm-12">
+                    <h3 class="font-weight-bold">
+                        <span class="text-danger">List of</span> Bed
+
+                    </h3>
+                </div>
+                <div class="col-md-6 col-sm-12">
+                    <form class="form-inline float-right-580" id="searchForm">
+                        @csrf
+                        <div class="form-group row">
+                            <input type="text" class="form-control mr-1 mb-1" id="search" value="{{ session('searchBed') }}"
+                                   name="search" placeholder="Search...">
+                            <button type="submit" class="btn btn-success mr-1 mb-1">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
         </div>
         <div class="card-body">
             <div class="table-responsive">

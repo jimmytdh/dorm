@@ -94,3 +94,11 @@ The Laravel framework is open-sourced software licensed under the [MIT license](
 ```bash
 composer dump-autoload
 ```
+### cURL error 60: SSL certificate in Laravel 9
+- Download this file: http://curl.haxx.se/ca/cacert.pem
+- Place this file in the C:\wamp64\bin\php\[php version] folder
+- Open php.ini and find this line:
+`;curl.cainfo`
+- Change it to: `curl.cainfo = "C:\wamp64\bin\php\php7.1.9\cacert.pem"`
+- Make sure you remove the semicolon at the beginning of the line.
+- Save changes to `php.ini`, restart WampServer, and you're good to go!

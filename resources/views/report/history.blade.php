@@ -4,9 +4,18 @@
     }
     .table td {
         vertical-align: middle;
+        white-space: nowrap;
     }
     .Monthly { color: #2742e7; }
     .Daily { color: #ff0000; }
+    @media (max-width: 507px) {
+        .float-right {
+            float: left !important;
+            margin-top: 15px;
+        }
+        .form-inline { width: 100%; }
+        .form-inline button { width: 100%; }
+    }
 </style>
 <div class="row justify-content-center">
     <div class="col-md-12">

@@ -1,6 +1,13 @@
 <style>
     .Male { color: #1b3eba; }
     .Female { color: #f74c4cfa; }
+    @media (max-width: 507px) {
+        .float-right {
+            float: left !important;
+            margin-top: 15px;
+        }
+        .form-inline { width: 100%; }
+    }
 </style>
 <div class="col-md-8">
     <div class="card">
