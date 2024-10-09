@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('particulars');
             $table->string('amount');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

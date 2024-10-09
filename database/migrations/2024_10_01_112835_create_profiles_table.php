@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('contact');
             $table->string('address');
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

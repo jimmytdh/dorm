@@ -10,6 +10,7 @@ use App\Http\Controllers\ProfileCtrl;
 use App\Http\Controllers\PaymentCtrl;
 use App\Http\Controllers\NotificationCtrl;
 use App\Http\Controllers\SMSCtrl;
+use App\Http\Controllers\SettingsCtrl;
 
 
 //Route::get('/login',[LoginCtrl::class,'login'])->name('login');
@@ -40,6 +41,7 @@ Route::group(['middleware' => 'auth'], function(){
 
     Route::get('report/payment/history',[PaymentCtrl::class,'paymentHistory']);
     Route::post('report/payment/history',[PaymentCtrl::class,'paymentHistoryProcess']);
+    Route::post('report/payment/history/search',[PaymentCtrl::class,'paymentHistorySearch']);
     Route::get('report/payment/history/{id}',[PaymentCtrl::class,'paymentInvoice']);
 
     Route::get('report/rental',[BedCtrl::class,'rentalLogs']);
@@ -54,6 +56,13 @@ Route::group(['middleware' => 'auth'], function(){
     //manage Profiles
     Route::post('profiles/search',[ProfileCtrl::class,'searchProfiles'])->name('profile.search');
     Route::resource('/profiles',ProfileCtrl::class);
+
+    //manage fees
+    Route::post('settings/fees',[SettingsCtrl::class,'updateFees']);
+
+    //manage account
+    Route::get('settings/account',[SettingsCtrl::class,'editAccount']);
+    Route::post('settings/account',[SettingsCtrl::class,'updateAccount']);
 
     //manage Documents
     Route::post('users/search',[UserCtrl::class,'searchUsers'])->name('user.search');

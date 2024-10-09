@@ -27,6 +27,7 @@ class ProfileCtrl extends Controller
 
     public function index()
     {
+        $this->authorize('manage_profiles');
         if (request()->ajax()) {
             $profiles = self::getData();
             $view = view('profile.index', compact('profiles'))->render();

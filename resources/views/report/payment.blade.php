@@ -22,7 +22,7 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="font-weight-bold">
-                    <span class="text-danger">Payment </span> Status
+                    <span class="text-danger">Bed Rental </span> Overview
                     <form class="form-inline float-right" id="searchForm">
                         @csrf
                         <div class="form-group row">
@@ -107,7 +107,7 @@
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item payment_menu" href="#paymentModal" data-assignment_id="{{ $row->id }}" data-toggle="modal"><i class="fa fa-dollar-sign"></i> Payment</a>
                                         @if($status !== 'Settled' || $balance > 0)
-                                        <a class="dropdown-item notify_menu" href="#notificationModal" data-status="{{ $status }}" data-assignment_id="{{ $row->id }}" data-toggle="modal"><i class="fa fa-bullhorn"></i> Notify</a>
+                                        <a class="dropdown-item notify_menu" href="#" data-status="{{ $status }}" data-assignment_id="{{ $row->id }}"><i class="fa fa-bullhorn"></i> Notify</a>
                                         @endif
                                         @if($balance<=0)
                                             <a class="dropdown-item checkout_menu" href="#checkoutModal" data-assignment_id="{{ $row->id }}" data-toggle="modal"><i class="fa fa-sign-out-alt"></i> Check Out</a>
@@ -144,36 +144,23 @@
         $('.notify_menu').click(function(){
             assignment_id = $(this).data('assignment_id');
             var status = $(this).data('status');
-            hideAllNotification();
-            if(status == 'Due')
-                $('#sms_due').show()
-            else if(status == 'Overdue')
-                $('#sms_overdue').show()
-            else if(status == 'Late and Overdue')
-                $('#sms_late').show()
-            else
-                $('#sms_pending').show()
 
-        })
-
-        $('.btn-notify').click(function(){
-            var msg = $(this).text();
-            $('#notificationModal').modal('hide');
             $.ajax({
                 url: `{{ url('notification/sendSMS') }}`,
                 type: 'POST',
                 data: {
                     _token: "{{ csrf_token() }}",
                     assignment_id: assignment_id,
-                    msg: msg,
+                    status: status,
                 },
                 success: function(response){
                     console.log(response)
                     Swal.fire({
                         icon: 'success',
-                        title: 'Success',
-                        text: 'Notification successfully sent!',
-                        confirmButtonText: 'OK'
+                        title: 'Notification Sent',
+                        html: response.msg,
+                        confirmButtonText: 'OK',
+                        showConfirmButton: false
                     });
                 },
                 error: function(xhr) {
@@ -192,7 +179,9 @@
                     }
                 }
             })
-        });
+
+        })
+
 
         $('.checkout_menu').click(function(){
             assignment_id = $(this).data('assignment_id');

@@ -32,6 +32,7 @@ class BedCtrl extends Controller
 
     public function index()
     {
+        $this->authorize('manage_beds');
         if (request()->ajax()) {
             $beds = self::getBedsData();
             $view = view('beds.index', compact('beds'))->render();

@@ -125,8 +125,8 @@
                     <li class="nav-header">REPORT</li>
                     <li class="nav-item">
                         <a href="{{ url('/report/payment') }}" class="nav-link handle-link">
-                            <i class="fas fa-wallet nav-icon"></i>
-                            <p>Payment Status</p>
+                            <i class="fas fa-receipt nav-icon"></i>
+                            <p>Bed Rental Overview</p>
                         </a>
                     </li>
                     <li class="nav-item">
@@ -157,7 +157,7 @@
 
                     <li class="nav-header">SETTINGS</li>
                     <li class="nav-item">
-                        <a href="{{ url('/fees') }}" class="nav-link handle-link">
+                        <a href="#feesModal" data-toggle="modal" class="nav-link">
                             <i class="fas fa-money-bill-wave nav-icon"></i>
                             <p>Manage Fees</p>
                         </a>
@@ -169,7 +169,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href="{{ url('/account') }}" class="nav-link handle-link">
+                        <a href="{{ url('settings/account') }}" class="nav-link handle-link">
                             <i class="nav-icon fas fa-user-cog"></i>
                             <p>
                                 Account Settings
@@ -211,9 +211,11 @@
 </div>
 
 
+@include('modal.fees')
 {{--put mix inside the asset --}}
 <script src="{{ asset(mix('/js/app.js')) }}"></script>
 @include('js.handleUrl')
+@include('js.fees')
 @yield('js')
 </body>
 </html>

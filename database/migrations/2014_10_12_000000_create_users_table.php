@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('avatar')->nullable();
             $table->string('role')->nullable();
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

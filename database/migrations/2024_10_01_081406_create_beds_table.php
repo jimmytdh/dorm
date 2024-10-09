@@ -20,6 +20,8 @@ return new class extends Migration
             $table->string('status')->default('Available');
             $table->string('remarks')->nullable();
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 

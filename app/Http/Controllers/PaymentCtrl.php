@@ -30,7 +30,7 @@ class PaymentCtrl extends Controller
                 })
                 ->orderBy('check_in','desc')->paginate(30);
             $view = view('report.payment', compact('data'))->render();
-            return loadPage($view, 'Payment Status');
+            return loadPage($view, 'Bed Rental Overview');
         }
         return view('app');
     }
@@ -75,8 +75,13 @@ class PaymentCtrl extends Controller
         return response()->json(['msg' => 'Search Complete']);
     }
 
+    public function paymentHistorySearch(Request $request){
+        Session::put('searchHistoryPayment', $request->search);
+        return response()->json(['msg' => 'Search Complete']);
+    }
+
     public function paymentHistory(){
-        $searchKeyword = Session::get('searchPayment');
+        $searchKeyword = Session::get('searchHistoryPayment');
         if (request()->ajax()) {
             $data = Payment::orderBy('payments.created_at','desc')
                 ->select('payments.*','profiles.*','bed_assignments.*','payments.created_at as date_paid','payments.id as payment_id')
@@ -97,6 +102,18 @@ class PaymentCtrl extends Controller
             return loadPage($view, 'Payment History');
         }
         return view('app');
+    }
+
+    public function paymentHistoryProcess(PaymentRequest $request){
+        Payment::find($request->id)
+            ->update([
+                'amount' => $request->amount,
+                'remarks' => $request->remarks
+            ]);
+        return response()->json([
+            'msg' => 'Payment successfully updated!',
+            'status' => 'success'
+        ]);
     }
 
     public function paymentInvoice($id){

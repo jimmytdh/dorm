@@ -10,6 +10,7 @@ class Payment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'id',
         'assignment_id',
         'amount',
         'status',
@@ -18,10 +19,10 @@ class Payment extends Model
     ];
 
     public function bedAssignment() {
-        return $this->belongsTo(BedAssignment::class);
+        return $this->belongsTo(BedAssignment::class,'assignment_id');
     }
 
     public function processBy() {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class,'process_by');
     }
 }

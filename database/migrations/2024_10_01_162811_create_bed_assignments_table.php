@@ -15,17 +15,18 @@ return new class extends Migration
     {
         Schema::create('bed_assignments', function (Blueprint $table) {
             $table->id();
-            $table->integer('bed_id');
-                $table->foreign('bed_id')->references('id')->on('beds')->onDelete('restrict');
-            $table->integer('profile_id');
-                $table->foreign('profile_id')->references('id')->on('profiles')->onDelete('restrict');
+            $table->bigInteger('bed_id');
+            $table->bigInteger('profile_id');
             $table->string('term');
-            $table->integer('process_by');
+            $table->bigInteger('process_by');
             $table->string('status')->default('Rented'); // Rented, Paid
             $table->date('check_in');
             $table->date('check_out')->nullable();
             $table->string('remarks')->nullable();
             $table->timestamps();
+
+            $table->index(['profile_id','bed_id','process_by']);
+            $table->engine = 'InnoDB';
         });
     }
 

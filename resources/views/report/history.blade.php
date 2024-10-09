@@ -26,7 +26,7 @@
                     <form class="form-inline float-right" id="searchForm">
                         @csrf
                         <div class="form-group row">
-                            <input type="text" class="form-control mr-1 mb-1" id="search" value="{{ session('searchPayment') }}"
+                            <input type="text" class="form-control mr-1 mb-1" id="search" value="{{ session('searchHistoryPayment') }}"
                                    name="search" placeholder="Search...">
                             <button type="submit" class="btn btn-success mr-1 mb-1">
                                 <i class="fa fa-search"></i>
@@ -65,7 +65,9 @@
                                     <!-- Dropdown menu -->
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item handle-link" href="{{ url('report/payment/history/'.$row->payment_id) }}"><i class="fa fa-file-invoice"></i> Invoice</a>
-                                        <a class="dropdown-item" href="#"><i class="fa fa-cogs"></i> Update</a>
+                                        @if($row->status=='Rented')
+                                            <a class="dropdown-item update_menu" href="#updatePaymentModal" data-toggle="modal" data-amount="{{ $row->amount }}" data-id="{{ $row->payment_id }}" data-remarks="{{ $row->remarks }}"><i class="fa fa-cogs"></i> Update</a>
+                                        @endif
                                     </div>
                                 </div>
                             </td>
@@ -83,13 +85,24 @@
         </div>
     </div>
 </div>
+
+@include('modal.updatePayment')
 @include('js.customUrl')
+
 <script>
     $(function () {
         let assignment_id = 0;
+        let id = 0;
+        let amount = 0;
+        let remarks = null;
 
-        $('.payment_menu').click(function(){
-            assignment_id = $(this).data('assignment_id');
+        $('.update_menu').click(function(){
+            id = $(this).data('id');
+            amount = $(this).data('amount');
+            remarks = $(this).data('remarks');
+
+            $("#amount").empty().val(amount);
+            $("#remarks").empty().val(remarks);
         })
         function resetAlert(){
             $('#error_messages').empty();
@@ -110,6 +123,49 @@
                 }
             })
         })
+
+        $('#payForm').submit(function(e){
+            e.preventDefault();
+            $('#updatePaymentModal').modal('hide');
+            $.ajax({
+                url: `{{ url('report/payment/history') }}`,
+                type: 'POST',
+                data: {
+                    _token: "{{ csrf_token() }}",
+                    amount: $('#amount').val(),
+                    id: id,
+                    remarks: $('#remarks').val(),
+                },
+                success: function(response){
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success',
+                        text: response.msg,
+                        confirmButtonText: 'OK'
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            // Navigate to the desired URL after the alert is closed
+                            navigate("{{ url('report/payment/history') }}");
+                        }
+                    });
+                },
+                error: function(xhr) {
+                    // Handle validation errors
+                    if (xhr.status === 422) {
+                        resetAlert();
+                        var errors = xhr.responseJSON.errors;
+                        $.each(errors, function(key, value) {
+                            // Displaying errors on form
+                            $('#error_messages').append('<div class="alert alert-danger">'+value+'</div>');
+                        });
+
+                    } else {
+                        // Handle other errors (if any)
+                        console.error(xhr.responseText);
+                    }
+                }
+            })
+        });
 
 
 

@@ -21,6 +21,8 @@ return new class extends Migration
             $table->integer('process_by');
             $table->text('remarks')->nullable();
             $table->timestamps();
+
+            $table->engine = 'InnoDB';
         });
     }
 
