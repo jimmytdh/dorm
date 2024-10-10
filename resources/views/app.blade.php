@@ -34,32 +34,7 @@
             </li>
         </ul>
         <ul class="navbar-nav ml-auto">
-            <li class="nav-item">
-                <a class="nav-link handle-link" data-widget="navbar-search" href="#" role="button">
-                    <i class="fas fa-search"></i>
-                </a>
-                <div class="navbar-search-block">
-                    <form action="#" method="post">
-                        @csrf
-                        <div class="input-group input-group-sm">
-                            <input class="form-control form-control-navbar" value="" name="searchNumber" type="search" placeholder="Search" aria-label="Search">
-                            <div class="input-group-append">
-                                <button class="btn btn-navbar" type="submit">
-                                    <i class="fas fa-search"></i>
-                                </button>
-                                <button class="btn btn-navbar" type="button" data-widget="navbar-search">
-                                    <i class="fas fa-times"></i>
-                                </button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link handle-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                    <i class="fas fa-bullhorn"></i>
-                </a>
-            </li>
+
         </ul>
     </nav>
 
@@ -72,20 +47,6 @@
         </a>
 
         <div class="sidebar">
-            <form action="#" method="post">
-                @csrf
-                <div class="form-inline mt-3">
-                    <div class="input-group">
-                        <input class="form-control form-control-sidebar" type="text" value="" name="searchNumber" placeholder="Search">
-                        <div class="input-group-append">
-                            <button type="submit" class="btn btn-sidebar">
-                                <i class="fas fa-search fa-fw"></i>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </form>
-
             <nav class="mt-2">
                 <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                     <li class="nav-header">MAIN MENU</li>
