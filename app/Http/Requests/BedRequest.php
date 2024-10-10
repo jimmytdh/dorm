@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class BedRequest extends FormRequest
 {
@@ -23,8 +24,14 @@ class BedRequest extends FormRequest
      */
     public function rules()
     {
+        $id = $this->route('bed');
         return [
-            'code' => 'required|string|max:255',
+            'code' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('beds', 'code')->ignore($id), // Username must be unique, but ignore the current user's username during update
+            ],
             'description' => 'string|max:255',
             'status' => 'required|string|max:255',
             'remarks' => 'nullable|string|max:255',
