@@ -14,12 +14,11 @@ class SemaphoreService
     {
         $this->client = new Client();
         $this->apiKey = env('SEMAPHORE_API_KEY');
-        $this->senderName = env('SEMAPHORE_SENDER_NAME', 'SEMAPHORE');
+        $this->senderName = env('SEMAPHORE_SENDER_NAME', 'JLSystems');
     }
 
     public function sendSMS($to, $message)
     {
-        //$url = "https://api.semaphore.co/api/v4/messages";
         $url = "https://semaphore.co/api/v4/messages";
         $response = $this->client->post($url, [
             'form_params' => [

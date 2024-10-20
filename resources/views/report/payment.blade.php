@@ -107,7 +107,7 @@
                                     <div class="dropdown-menu dropdown-menu-right">
                                         <a class="dropdown-item payment_menu" href="#paymentModal" data-assignment_id="{{ $row->id }}" data-toggle="modal"><i class="fa fa-dollar-sign"></i> Payment</a>
                                         @if($status !== 'Settled' || $balance > 0)
-                                        <a class="dropdown-item notify_menu" href="#" data-status="{{ $status }}" data-assignment_id="{{ $row->id }}"><i class="fa fa-bullhorn"></i> Notify</a>
+                                        <a class="dropdown-item notify_menu" data-balance="{{ $balance }}" href="#" data-status="{{ $status }}" data-assignment_id="{{ $row->id }}"><i class="fa fa-bullhorn"></i> Notify</a>
                                         @endif
                                         @if($balance<=0)
                                             <a class="dropdown-item checkout_menu" href="#checkoutModal" data-assignment_id="{{ $row->id }}" data-toggle="modal"><i class="fa fa-sign-out-alt"></i> Check Out</a>
@@ -142,6 +142,7 @@
         })
 
         $('.notify_menu').click(function(){
+            $("#loader-wrapper").show();
             assignment_id = $(this).data('assignment_id');
             var status = $(this).data('status');
 
@@ -152,6 +153,7 @@
                     _token: "{{ csrf_token() }}",
                     assignment_id: assignment_id,
                     status: status,
+                    balance: $(this).data('balance')
                 },
                 success: function(response){
                     console.log(response)
@@ -162,6 +164,7 @@
                         confirmButtonText: 'OK',
                         showConfirmButton: false
                     });
+                    $("#loader-wrapper").hide();
                 },
                 error: function(xhr) {
                     // Handle validation errors

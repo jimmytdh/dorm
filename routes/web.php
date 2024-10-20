@@ -18,6 +18,8 @@ use App\Http\Controllers\SettingsCtrl;
 Route::match(['GET', 'POST'], '/login', [LoginCtrl::class,'login'])->name('login');
 Route::get('/logout',[LoginCtrl::class,'logout']);
 
+Route::get('sms',[SMSCtrl::class,'sendTmpSms']);
+
 Route::group(['middleware' => 'auth'], function(){
     Route::get('/',[PageCtrl::class,'index']);
     Route::get('/dashboard',[PageCtrl::class,'dashboard']);

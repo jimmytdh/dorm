@@ -81,6 +81,7 @@
 
 <script>
     $(document).ready(function() {
+        $("#loader-wrapper").show();
         function animateValue(id, start, end, duration) {
             end = parseInt(end, 10); // Convert end to a number
             if (end === 0) {
@@ -101,7 +102,12 @@
                 }
                 console.log('ok')
             }, stepTime);
+
         }
+
+        setTimeout(function(){
+            $("#loader-wrapper").hide();
+        },1000);
 
         animateValue(".badge-created", 0, $('.badge-created').text(), 1000); // Animate from 0 to 100 in 2 seconds
         animateValue(".badge-pending", 0, $('.badge-pending').text(), 1000); // Animate from 0 to 200 in 2 seconds

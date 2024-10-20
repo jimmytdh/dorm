@@ -87,7 +87,7 @@
                     <li class="nav-item">
                         <a href="{{ url('/report/payment') }}" class="nav-link handle-link">
                             <i class="fas fa-receipt nav-icon"></i>
-                            <p>Bed Rental Overview</p>
+                            <p>Rental Overview</p>
                         </a>
                     </li>
                     <li class="nav-item">
