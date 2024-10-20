@@ -7,12 +7,20 @@ use App\Http\Requests\BedRequest;
 use App\Models\Bed;
 use App\Models\BedAssignment;
 use App\Models\Profile;
+use App\Services\SemaphoreService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
 class BedCtrl extends Controller
 {
+
+    protected $semaphoreService;
+
+    public function __construct(SemaphoreService $semaphoreService)
+    {
+        $this->semaphoreService = $semaphoreService;
+    }
 
     public function getBedsData(){
         $searchKeyword = Session::get('searchBed');
@@ -163,7 +171,7 @@ class BedCtrl extends Controller
 
     public function assignmentStore(AssignmentRequest $request){
         $this->authorize('manage_assignment');
-        BedAssignment::create([
+        $assignment = BedAssignment::create([
             'bed_id' => $request->bed_id,
             'profile_id' => $request->profile_id,
             'term' => $request->term,
@@ -171,7 +179,8 @@ class BedCtrl extends Controller
             'status' => 'Rented',
             'check_in' => $request->check_in
         ]);
-
+        $sms = new SMSCtrl($this->semaphoreService);
+        $sms->sendCheckInOut($assignment->id, $request->profile_id,'checkin');
         Bed::findOrFail($request->bed_id)->update(['status' => 'Occupied']);
         return response()->json(['msg' => 'Added']);
     }
@@ -207,6 +216,8 @@ class BedCtrl extends Controller
             'check_in' => $request->check_in
         ]);
         // Return JSON response with success message
+        $sms = new SMSCtrl($this->semaphoreService);
+        $sms->sendCheckInOut($id, $request->profile_id,'change');
         Bed::findOrFail($request->selected_bed)->update(['status' => 'Available']);
         Bed::findOrFail($request->bed_id)->update(['status' => 'Occupied']);
         return response()->json([

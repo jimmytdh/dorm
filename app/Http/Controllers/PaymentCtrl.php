@@ -6,12 +6,20 @@ use App\Http\Requests\PaymentRequest;
 use App\Models\Bed;
 use App\Models\BedAssignment;
 use App\Models\Payment;
+use App\Services\SemaphoreService;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 
 class PaymentCtrl extends Controller
 {
+    protected $semaphoreService;
+
+    public function __construct(SemaphoreService $semaphoreService)
+    {
+        $this->semaphoreService = $semaphoreService;
+    }
+
     public function paymentIndex(){
         $searchKeyword = Session::get('searchPayment');
         if (request()->ajax()) {
@@ -64,6 +72,8 @@ class PaymentCtrl extends Controller
             'status' => 'Checkout',
             'remarks' => $request->remarks
         ]);
+        $sms = new SMSCtrl($this->semaphoreService);
+        $sms->sendCheckInOut($assignment->id, $assignment->profile_id,'checkout');
         return response()->json([
             'msg' => 'Checkout successfully!',
             'status' => 'success'

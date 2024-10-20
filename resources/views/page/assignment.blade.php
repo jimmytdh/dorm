@@ -132,6 +132,7 @@
 
         $('#formSubmit').submit(function(e){
             e.preventDefault();
+            $("#loader-wrapper").show();
             var url = `{{ url('beds/assignment') }}`;
             $.ajax({
                 url: url,
@@ -144,6 +145,7 @@
                     check_in: $('#check_in').val(),
                 },
                 success: function(response){
+                    $("#loader-wrapper").hide();
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',

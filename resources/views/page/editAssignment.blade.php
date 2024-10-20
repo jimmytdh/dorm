@@ -138,6 +138,7 @@
 
         $('#formSubmit').submit(function(e){
             e.preventDefault();
+            $("#loader-wrapper").show();
             var url = `{{ url('beds/assignment/'.$info->id.'/edit') }}`;
             $.ajax({
                 url: url,
@@ -151,6 +152,7 @@
                     selected_bed: $('#selected_bed').val(),
                 },
                 success: function(response){
+                    $("#loader-wrapper").hide();
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',

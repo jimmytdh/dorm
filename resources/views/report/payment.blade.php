@@ -66,8 +66,10 @@
                             <td>
                                 @if($row->term == 'Daily')
                                     @if($balance>0)
+                                        <?php $status = 'pending'; ?>
                                         <alert class="badge badge-warning">Pending</alert>
                                     @else
+                                        <?php $status = 'Settled'; ?>
                                         <alert class="badge badge-success">Settled</alert>
                                     @endif
                                 @else
@@ -202,6 +204,7 @@
         $('#payForm').submit(function(e){
             e.preventDefault();
             $('#paymentModal').modal('hide');
+            $("#loader-wrapper").show();
             $.ajax({
                 url: `{{ url('report/payment') }}`,
                 type: 'POST',
@@ -212,6 +215,7 @@
                     remarks: $('#remarks').val(),
                 },
                 success: function(response){
+                    $("#loader-wrapper").hide();
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',
@@ -246,6 +250,7 @@
         $('#checkoutForm').submit(function(e){
             e.preventDefault();
             $('#checkoutModal').modal('hide');
+            $("#loader-wrapper").show();
             $.ajax({
                 url: `{{ url('report/payment/checkout') }}`,
                 type: 'POST',
@@ -255,7 +260,7 @@
                     remarks: $('#remarks').val(),
                 },
                 success: function(response){
-                    console.log(response)
+                    $("#loader-wrapper").hide();
                     Swal.fire({
                         icon: 'success',
                         title: 'Success',

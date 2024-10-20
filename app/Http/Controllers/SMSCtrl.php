@@ -27,6 +27,25 @@ class SMSCtrl extends Controller
         return response()->json($response);
     }
 
+    public function sendCheckInOut($assignment_id, $profile_id,$status){
+        $profile = Profile::find($profile_id);
+        $name = "$profile->fname $profile->lname";
+        $contact = $profile->contact;
+        $assignment = BedAssignment::find($assignment_id);
+        if($status == 'checkin'){
+            $checkInDate = date('M d, Y',strtotime($assignment->check_in));
+            $msg = "Hello $name, your check-in was successful on $checkInDate. ";
+        }else if($status=='checkout'){
+            $checkOutDate = date('M d, Y',strtotime($assignment->check_out));
+            $msg = "Hello $name, your check-out was successful on $checkOutDate.";
+        }else{
+            $newDate = date('M d, Y',strtotime($assignment->check_in));
+            $msg = "Hello $name, your rental has been successfully updated. "
+                . "The new rental period starts on $newDate and will follow a $assignment->term payment term.";
+        }
+        $this->semaphoreService->sendSMS($contact, $msg);
+    }
+
     public function sendSMS(Request $request)
     {
         $balance = $request->balance;
